@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - E-Shop</title>
+    <style>
+        * { margin:0; padding:0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #222; color: #fff; }
+        .login-container { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center; width: 300px; }
+        input, button { width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: none; }
+        input { background: rgba(255,255,255,0.2); color: #fff; }
+        button { background: green; color: #fff; cursor: pointer; }
+        button:hover { background: darkgreen; }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUser" placeholder="Username">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
+</div>
+<script>
+    function adminLogin(){
+        const username = document.getElementById("adminUser").value;
+        const password = document.getElementById("adminPass").value;
+        if(username === "estew" && password === "2011"){
+            window.location.href = "admin.html";
+        } else {
+            window.location.href = "https://youtu.be/c3-UCeCVBkc";
+        }
+    }
+</script>
+</body>
+</html>
