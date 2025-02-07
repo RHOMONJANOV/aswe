@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 90%;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+            border: 2px solid #ddd;
+            outline: none;
+            font-size: 16px;
+            transition: 0.3s;
+            background-color: #f8f8f8;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border: 2px solid #007bff;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .login-btn,
+        .signup-btn {
+            width: 100%;
+            padding: 18px;
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 20px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .login-btn:hover,
+        .signup-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 18px rgba(0, 123, 255, 0.4);
+        }
+
+        .login-btn:active,
+        .signup-btn:active {
+            background-color: #003f7f;
+            transform: translateY(2px);
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .login-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        .container h3 {
+            margin-top: 20px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        /* Loading spinner with pulsing effect */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite, pulse 1.5s ease-in-out infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        .motion-blur {
+            filter: blur(5px);
+            transition: filter 0.5s ease;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 36px;
+            }
+            .container {
+                width: 90%;
+                padding: 25px;
+            }
+            .login-btn,
+            .signup-btn {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to Our Website</h1>
+
+<!-- Loading Spinner -->
+<div class="spinner" id="loadingSpinner"></div>
+
+<!-- Login Form -->
+<div class="container" id="loginContainer">
+    <h3>Sign In</h3>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button class="login-btn" onclick="signIn()">Login</button>
+    <p>Don't have an account? <a href="#" onclick="showSignUp()" class="login-link">Sign Up</a></p>
+    <div id="loginSuccess" class="success-message">Login Successful!</div>
+</div>
+
+<!-- Sign Up Form -->
+<div class="container" id="signupContainer" style="display:none;">
+    <h3>Sign Up</h3>
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="email" id="signupEmail" placeholder="Email" required>
+    <input type="password" id="signupPassword" placeholder="Password" required>
+    <button class="signup-btn" onclick="signUp()">Register</button>
+    <p>Already have an account? <a href="#" onclick="showLogin()" class="login-link">Sign In</a></p>
+    <div id="signupSuccess" class="success-message">Account Created Successfully!</div>
+</div>
+
+<script>
+    if (localStorage.getItem('loggedIn') === 'true') {
+        window.location.href = "profile.html";
+    }
+
+    function showSignUp() {
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('signupContainer').style.display = 'block';
+        document.body.classList.add('motion-blur');
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        setTimeout(function() {
+            document.body.classList.remove('motion-blur');
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }, 5000);
+    }
+
+    function showLogin() {
+        document.getElementById('signupContainer').style.display = 'none';
+        document.getElementById('loginContainer').style.display = 'block';
+        document.body.classList.remove('motion-blur');
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }
+
+    function signUp() {
+        let name = document.getElementById('name').value;
+        let email = document.getElementById('signupEmail').value;
+        let password = document.getElementById('signupPassword').value;
+
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        setTimeout(function() {
+            localStorage.setItem('user', JSON.stringify({ name, email, password }));
+            document.getElementById('loadingSpinner').style.display = 'none';
+            document.getElementById('signupSuccess').classList.add('show-success');
+            setTimeout(function() {
+                document.getElementById('signupSuccess').classList.remove('show-success');
+                showLogin();
+            }, 2000);
+        }, 2000);
+    }
+
+    function signIn() {
+        let email = document.getElementById('loginEmail').value;
+        let password = document.getElementById('loginPassword').value;
+        let user = JSON.parse(localStorage.getItem('user'));
+
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        setTimeout(function() {
+            if (user && user.email === email && user.password === password) {
+                localStorage.setItem('loggedIn', 'true');
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('loginSuccess').classList.add('show-success');
+                setTimeout(function() {
+                    document.getElementById('loginSuccess').classList.remove('show-success');
+                    window.location.href = "profile.html";
+                }, 2000);
+            } else {
+                alert('Invalid email or password!');
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>
